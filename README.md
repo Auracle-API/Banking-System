@@ -45,3 +45,4 @@ Supports deposits, withdrawals, and transfers between accounts.
 - Transactions table and statement view.
 - DB transactions with row locking for transfers.
 - Integration tests for the edge cases.
+- Give users specific access to my database so that they can use the app on different apps
