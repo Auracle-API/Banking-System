@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Bank App</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .box { border: 1px solid #ccc; padding: 20px; width: 300px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to Auracle Bank</h1>
+
+<div class="box">
+    <h3>Check Balance</h3>
+    <input type="text" id="accNum" placeholder="Enter Account Number">
+    <button onclick="checkBalance()">Check</button>
+    <p id="balanceResult"></p>
+</div>
+
+<div class="box">
+    <h3>Transfer Money</h3>
+    <input type="text" id="fromAcc" placeholder="From Account"><br><br>
+    <input type="text" id="toAcc" placeholder="To Account"><br><br>
+    <input type="number" id="amount" placeholder="Amount"><br><br>
+    <button onclick="makeTransfer()">Transfer</button>
+    <p id="transferResult"></p>
+</div>
+
+<script>
+    // This JavaScript talks to your Java Waiter (Spring Boot)
+
+    async function checkBalance() {
+        const acc = document.getElementById('accNum').value;
+        // Call the Java backend
+        const response = await fetch(`http://localhost:8080/api/accounts/balance/${acc}`);
+        const text = await response.text();
+        document.getElementById('balanceResult').innerText = text;
+    }
+
+    async function makeTransfer() {
+        const from = document.getElementById('fromAcc').value;
+        const to = document.getElementById('toAcc').value;
+        const amt = document.getElementById('amount').value;
+
+        // Call the Java backend
+        const response = await fetch('http://localhost:8080/api/accounts/transfer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fromAccount: from, toAccount: to, amount: amt })
+        });
+
+        const text = await response.text();
+        document.getElementById('transferResult').innerText = text;
+    }
+</script>
+</body>
+</html>
